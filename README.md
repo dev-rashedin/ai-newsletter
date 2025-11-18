@@ -1,0 +1,1 @@
+## AI Newsletter app built with Next.js and Supabase
