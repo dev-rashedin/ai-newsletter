@@ -2,8 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { createClient } from '@/lib/client';
-
+import { createClient } from '@/lib/supabase/client';
 
 export default function SignInPage() {
   const [email, setEmail] = useState('');
@@ -14,31 +13,32 @@ export default function SignInPage() {
   const [message, setMessage] = useState<string | null>(null);
   const router = useRouter();
   const supabase = createClient();
+  
 
   // // Check if user is already logged in and redirect to /dashboard
-  // useEffect(() => {
-  //   const checkUser = async () => {
-  //     const {
-  //       data: { user },
-  //     } = await supabase.auth.getUser();
-  //     if (user) {
-  //       router.replace('/dashboard');
-  //     }
-  //   };
+  useEffect(() => {
+    const checkUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (user) {
+        router.replace('/dashboard');
+      }
+    };
 
-  //   checkUser();
-  // }, [router, supabase.auth]);
+    checkUser();
+  }, [router, supabase.auth]);
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     try {
       if (isSignUp) {
         const { error } = await supabase.auth.signUp({
           email,
           password,
         });
-        
+
         if (error) {
           setError(error.message);
           setMessage(null);
@@ -51,11 +51,15 @@ export default function SignInPage() {
         const { error } = await supabase.auth.signInWithPassword({
           email,
           password,
-        })
+        });
 
         if (error) {
           setError(error.message);
           setMessage(null);
+          console.error(
+            'Error: ',
+            error instanceof Error ? error.message : error
+          );
           return;
         }
         router.push('/dashboard');
@@ -65,10 +69,7 @@ export default function SignInPage() {
       setMessage(null);
       console.error('Error: ', error instanceof Error ? error.message : error);
     }
-
-  }
-
-
+  };
 
   return (
     <div className='min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 flex-center py-12px-4 sm:px-6 lg:px-8'>
@@ -191,9 +192,7 @@ export default function SignInPage() {
                 setMessage(null);
               }}
             >
-              {isSignUp
-                ? 'Sign in'
-                : "Sign up"}
+              {isSignUp ? 'Sign In' : 'Sign Up'}
             </a>
           </div>
         </div>
