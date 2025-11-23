@@ -31,9 +31,40 @@ export default function SignInPage() {
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    setError(null);
-    setMessage(null);
+    
+    try {
+      if (isSignUp) {
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+        });
+        
+        if (error) {
+          setError(error.message);
+          setMessage(null);
+          return;
+        } else {
+          setError(null);
+          setMessage('Check your email for the confirmation link');
+        }
+      } else {
+        const { error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        })
+
+        if (error) {
+          setError(error.message);
+          setMessage(null);
+          return;
+        }
+        router.push('/dashboard');
+      }
+    } catch (error) {
+      setError('An unexpected error occurred. Please try again.');
+      setMessage(null);
+      console.error('Error: ', error instanceof Error ? error.message : error);
+    }
 
   }
 
@@ -41,12 +72,12 @@ export default function SignInPage() {
 
   return (
     <div className='min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 flex-center py-12px-4 sm:px-6 lg:px-8'>
-      <div className='max-w-md w-full space-y-8'>
+      <div className='max-w-lg w-full space-y-8'>
         <div className='text-center'>
-          <h1 className=' text-gray-900 leading-10'>
-            Personalized <br /> AI Newsletter
+          <h1 className=' text-gray-900 leading-10 mb-12'>
+            Personalized AI Newsletter
           </h1>
-          <p className='text-xl text-gray-600'>
+          <p className='text-xl text-gray-700'>
             {isSignUp ? 'Create your account' : 'Sign in to your account'}
           </p>
         </div>
@@ -80,7 +111,6 @@ export default function SignInPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className='mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 text-black focus:outline-none focus:ring-blue-500 focus:border-blue-500'
                 placeholder='Enter your email'
               />
             </div>
@@ -100,7 +130,6 @@ export default function SignInPage() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className='mt-1 block w-full px-3 py-2 border text-black border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500'
                 placeholder='Enter your password'
               />
             </div>
