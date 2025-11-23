@@ -26,4 +26,10 @@ body {
 }
 
 
-I
+
+
+@layer utilites {
+.flex-center {
+  @apply flex justify-center items-center
+}
+}
