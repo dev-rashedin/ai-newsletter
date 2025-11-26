@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { createClient } from '@/lib/supabase/client';
+import { createClient } from '../../../lib/supabase/client';
 
 export default function SignInPage() {
   const [email, setEmail] = useState('');
@@ -13,7 +13,6 @@ export default function SignInPage() {
   const [message, setMessage] = useState<string | null>(null);
   const router = useRouter();
   const supabase = createClient();
-  
 
   // // Check if user is already logged in and redirect to /dashboard
   useEffect(() => {
