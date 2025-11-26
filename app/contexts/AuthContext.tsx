@@ -29,7 +29,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(session?.user ?? null);
       setLoading(false);
     });
-  }, []);
+
+    // listening for auth changes
+    const {data: { subscription }} = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+      setLoading(false);
+    }) 
+
+    return () => subscription.unsubscribe();
+
+  }, [supabase.auth]);
 
 
   const signOut = async () => {

@@ -8,11 +8,16 @@ import { useAuth } from '../contexts/AuthContext';
 
 export default function Navbar() {
 
-  const handleLogout = async () => {
-    
-  };
+  const router = useRouter()
 
-  const { user } = useAuth()
+
+
+  const { user, signOut } = useAuth()
+
+  const handleLogout = async () => {
+    await signOut();
+    router.push('/signin');
+    };
   
 
   if(!user) return null
