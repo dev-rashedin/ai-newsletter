@@ -1,7 +1,7 @@
 
 const DashboardPage = () => {
   return (
-    <div className="flex-center min-h-screen">page</div>
+    <div className="flex-center h-[calc(100vh-72px)]">page</div>
   )
 }
 export default DashboardPage

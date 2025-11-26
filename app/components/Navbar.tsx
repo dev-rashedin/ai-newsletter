@@ -1,6 +1,8 @@
 'use client';
 
 
+
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 export default function Navbar() {
@@ -15,20 +17,20 @@ export default function Navbar() {
 
 
   return (
-    <header className='bg-white shadow-sm border-b'>
-      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-        <div className='flex justify-between items-center h-16'>
-          <div className='flex items-center'>
-            <h1 className='text-xl font-semibold text-gray-900'>
-              Personalized AI Newsletter
-            </h1>
-          </div>
+    <header className='bg-gray-900 text-gray-200 shadow-sm'>
+      <div className='boundary '>
+        <div className='flex justify-between items-center h-18'>
+          {/* left side */}
+          <Link href='/' className='flex-center pt-4 text-gray-200 no-underline'>
+            <h1 className='text-xl font-semibold'>AI Newsletter</h1>
+          </Link>
 
-          <div className='flex items-center space-x-4'>
-            <span className='text-sm text-gray-600'>Welcome, {user.email}</span>
+          {/* right side */}
+          <div>
+            {/* <span className='text-sm text-gray-600'>Welcome, {user.email}</span> */}
             <button
               onClick={handleLogout}
-              className='inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors'
+              className='inline-flex items-center  border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors'
             >
               Logout
             </button>
